@@ -1,26 +1,36 @@
-import React from 'react';
+import React, {Component} from 'react';
+import axios from 'axios';
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
+class App extends Component {
+  constructor () {
+    super(props);
+    this.state = {
+      chracters: []
+    };
+
+  }
+  getChracters(){
+    const promise = axios.get("https://www.breakingbadapi.com/api/characters")
+    promise.then(response =>{
+      console.log(response.data);
+      this.setState({chracters: response.data});
+    }
+  });
+
+  render(){
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>The Breaking Bad Api</h1>
+      <button onClick= {this.getChacters}/> Get Chracters </button>
+      {
+        this.state.chracters.map(chracter => <h2> {chracter.name})</h2>
+      }
+    
     </div>
   );
+  }
 }
 
 export default App;
